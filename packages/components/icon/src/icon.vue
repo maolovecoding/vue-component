@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createNameSpace } from "@mao/utils";
-import { computed } from "@vue/reactivity";
+import { computed } from "vue";
 interface IconProps {
   color?: string;
   size?: string | number;
@@ -14,12 +14,12 @@ const style = computed(() => {
     ...(size
       ? { "font-size": typeof size === "number" ? size + "px" : size }
       : {}),
-    ...(color ? { color: color } : {}),
+    ...(color ? { color: color } : {})
   };
 });
 // 定义名字
 defineOptions({
-  name: "m-icon",
+  name: "m-icon"
 });
 </script>
 <template>
