@@ -1,0 +1,29 @@
+{
+  "name": "vue3-component",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "pnpm -C play dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maolovecoding/vue-component.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maolovecoding/vue-component/issues"
+  },
+  "homepage": "https://github.com/maolovecoding/vue-component#readme",
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@mao/components": "workspace:*",
+    "@mao/theme-chalk": "workspace:*",
+    "@mao/utils": "workspace:*",
+    "vue": "^3.2.37"
+  }
+}
