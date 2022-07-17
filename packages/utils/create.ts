@@ -5,15 +5,12 @@
 // m-button__element--disabled
 // is-checked  is-enabled
 
-const bem = createNameSpace("button");
-console.log(bem.b("box"));
-
-function createNameSpace(name: string) {
+export function createNameSpace(name: string) {
   const prefixName = `m-${name}`;
   return createBEM(prefixName);
 }
-function createBEM(prefixName: string) {
-  const b = (blockSuffix: string) => _bem(prefixName, blockSuffix);
+export function createBEM(prefixName: string) {
+  const b = (blockSuffix?: string) => _bem(prefixName, blockSuffix);
   const e = (element?: string) =>
     element ? _bem(prefixName, "", element) : "";
   const m = (modifier?: string) =>

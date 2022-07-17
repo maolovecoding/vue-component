@@ -114,7 +114,8 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "allowSyntheticDefaultImports": true, // 允许没有导出的模块中导入
     "experimentalDecorators": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": ["unplugin-vue-define-options"]
   },
   "exclude": ["node_modules", "**/__test__", "dist/**"]
 }
