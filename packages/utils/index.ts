@@ -1,2 +1,2 @@
-export * from "./create";
-export * from "./with-install";
+export * from "./src/create";
+export * from "./src/with-install";

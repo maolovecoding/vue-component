@@ -14,7 +14,7 @@ const style = computed(() => {
     ...(size
       ? { "font-size": typeof size === "number" ? size + "px" : size }
       : {}),
-    ...(color ? { color: color } : {})
+    ...(color ? { color } : {})
   };
 });
 // 定义名字
