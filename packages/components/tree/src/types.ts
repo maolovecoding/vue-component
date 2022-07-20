@@ -24,7 +24,8 @@ export interface ITreeNode extends Required<ITreeOptions> {
   isLeaf: boolean;
 }
 
-interface ITreeNodeProps {
+export interface ITreeNodeProps {
   node: ITreeNode;
   expanded?: boolean;
+  loadingKeys?: Set<Key>;
 }

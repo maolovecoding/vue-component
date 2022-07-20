@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { createNameSpace } from "@mao/utils";
 import MSwitcher from "./icon/switcher";
-import { ITreeNode } from "./types";
+import { ITreeNode, Key } from "./types";
+import Loading from "./icon/loading";
+import { computed } from "vue";
 interface ITreeNodeProps {
   node: ITreeNode;
   expanded?: boolean;
+  loadingKeys: Set<Key>;
 }
 
 const bem = createNameSpace("tree-node");
-const { node, expanded = false } = defineProps<ITreeNodeProps>();
+const { node, expanded = false, loadingKeys } = defineProps<ITreeNodeProps>();
 const emits = defineEmits<{
   (e: "toggleExpand", node: ITreeNode): void;
 }>();
@@ -18,6 +21,7 @@ const emits = defineEmits<{
 const handleExpandClick = () => {
   emits("toggleExpand", node);
 };
+const isLoading = computed(() => loadingKeys.has(node.key));
 </script>
 <template>
   <div :class="bem.b()">
@@ -34,7 +38,8 @@ const handleExpandClick = () => {
         @click="handleExpandClick"
       >
         <m-icon size="25" color="pink">
-          <m-switcher />
+          <Loading v-if="isLoading" />
+          <m-switcher v-else />
         </m-icon>
       </span>
       <span>{{ node.label }}</span>
