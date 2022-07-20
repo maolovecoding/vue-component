@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { ITreeOptions } from "@mao/components/tree";
+import { ITreeOptions, Key } from "@mao/components/tree";
 import { AddCircle } from "@vicons/ionicons5";
 import "@mao/theme-chalk";
 
@@ -49,7 +49,7 @@ function createLabel(level: number): string {
   if (level === 1) return "三生万物";
   return "";
 }
-const data = ref(createData2());
+const data = ref(createData());
 const handleLoad = (node: ITreeOptions) => {
   return new Promise<ITreeOptions[]>(resolve => {
     setTimeout(resolve, 1000, [
@@ -61,6 +61,8 @@ const handleLoad = (node: ITreeOptions) => {
     ]);
   });
 };
+// 选中的数据
+const selectedKeys = ref<Key[]>(["40", "41"]);
 </script>
 
 <template>
@@ -69,11 +71,14 @@ const handleLoad = (node: ITreeOptions) => {
   </m-icon>
   <!-- tree组件 使用时传递一个树形结构 -->
   <m-tree
+    v-model:selected-keys="selectedKeys"
+    :selectable="true"
+    :multiple="true"
     :data="data"
     label-field="label"
     key-field="key"
     children-field="children"
-    :default-expanded-keys="['41', '31']"
+    :default-expanded-keys="['40', '41']"
     :on-load="handleLoad"
   ></m-tree>
 </template>

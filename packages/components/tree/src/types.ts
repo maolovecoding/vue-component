@@ -14,6 +14,13 @@ export interface ITreeProps {
   childrenField?: string;
   // 默认展开的 key
   defaultExpandedKeys?: Key[];
+  // 异步加载数据成功后触发的回调
+  onLoad?: (node: ITreeOptions) => Promise<ITreeOptions[]>;
+  selectedKeys?: Key[];
+  // 是否允许选中数据
+  selectable?: boolean;
+  // 是否允许多选
+  multiple?: boolean;
 }
 export interface ITreeNode extends Required<ITreeOptions> {
   level: number;
@@ -28,4 +35,5 @@ export interface ITreeNodeProps {
   node: ITreeNode;
   expanded?: boolean;
   loadingKeys?: Set<Key>;
+  selectedKeys?:Key[]
 }

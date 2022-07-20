@@ -23,4 +23,15 @@
       cursor: default;
     }
   }
+  @include when(selected) {
+    background-color: aquamarine;
+  }
+  @include e(content) {
+    display: flex;
+  }
+  @include e(label) {
+    cursor: pointer;
+    display: flex;
+    flex: 1;
+  }
 }

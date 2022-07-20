@@ -8,25 +8,39 @@ interface ITreeNodeProps {
   node: ITreeNode;
   expanded?: boolean;
   loadingKeys: Set<Key>;
+  selectedKeys?: Key[];
 }
 
 const bem = createNameSpace("tree-node");
-const { node, expanded = false, loadingKeys } = defineProps<ITreeNodeProps>();
+const {
+  node,
+  expanded = false,
+  loadingKeys,
+  selectedKeys
+} = defineProps<ITreeNodeProps>();
 const emits = defineEmits<{
-  (e: "toggleExpand", node: ITreeNode): void;
+  (e: "toggle", node: ITreeNode): void;
+  (e: "select", node: ITreeNode): void;
 }>();
 /**
  * 点击切换显示隐藏
  */
 const handleExpandClick = () => {
-  emits("toggleExpand", node);
+  emits("toggle", node);
 };
+// 正在加载的数据keys
 const isLoading = computed(() => loadingKeys.has(node.key));
+// 计算是否被选中
+const isSelected = computed(() => selectedKeys?.includes(node.key));
+
+const handleSelect = () => {
+  emits("select", node);
+};
 </script>
 <template>
-  <div :class="bem.b()">
+  <div :class="[bem.b(), bem.is('selected', !!isSelected)]">
     <div
-      :class="bem.e('content')"
+      :class="[bem.e('content')]"
       :style="{ paddingLeft: node.level * 16 + 'px' }"
     >
       <span
@@ -42,7 +56,9 @@ const isLoading = computed(() => loadingKeys.has(node.key));
           <m-switcher v-else />
         </m-icon>
       </span>
-      <span>{{ node.label }}</span>
+      <span :class="bem.e('label')" @click="handleSelect">{{
+        node.label
+      }}</span>
     </div>
   </div>
 </template>

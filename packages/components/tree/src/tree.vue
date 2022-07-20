@@ -20,6 +20,12 @@ interface ITreeProps {
   defaultExpandedKeys?: Key[];
   // 异步加载数据成功后触发的回调
   onLoad?: (node: ITreeOptions) => Promise<ITreeOptions[]>;
+  // 双向绑定时 选中的数据项keys
+  selectedKeys?: Key[];
+  // 是否允许选中数据
+  selectable?: boolean;
+  // 是否允许多选
+  multiple?: boolean;
 }
 interface ITreeNode extends Required<ITreeOptions> {
   level: number;
@@ -39,13 +45,17 @@ const {
   keyField = "key",
   childrenField = "children",
   defaultExpandedKeys = [],
-  onLoad
+  onLoad,
+  selectedKeys,
+  // 默认可选中
+  selectable = true,
+  multiple = false
 } = defineProps<ITreeProps>();
 
 // 定义事件
-// const emits = defineEmits<{
-//   (e: "onLoad"): void;
-// }>();
+const emits = defineEmits<{
+  (e: "update:selectedKeys", keys: Key[]): Key[];
+}>();
 // tree 就是对数据格式化后的结果
 const tree = ref<ITreeNode[]>([]);
 
@@ -195,6 +205,42 @@ const toggleExpand = (node: ITreeNode) => {
     collapse(node);
   else expand(node);
 };
+// 实现选中节点
+const selectedKeysRef = ref<Key[]>([]);
+watch(
+  () => selectedKeys,
+  value => {
+    if (value) {
+      selectedKeysRef.value = value;
+    }
+  },
+  { immediate: true }
+);
+const handleSelect = (node: ITreeNode) => {
+  // 解除响应式
+  let keys = Array.from(selectedKeysRef.value);
+  // 不能选择 就不需要做任何事情
+  if (!selectable) return;
+  // 可选 看多选还是单选
+  if (multiple) {
+    const exist = keys.findIndex(key => key === node.key);
+    if (exist !== -1) {
+      // 删除
+      keys.splice(exist,1);
+    } else {
+      // 添加
+      keys.push(node.key);
+    }
+  } else {
+    if (keys.includes(node.key)) {
+      keys = [];
+    } else {
+      keys = [node.key];
+    }
+  }
+  // 更新双向绑定的数据
+  emits("update:selectedKeys", keys);
+};
 </script>
 <template>
   <div :class="bem.b()">
@@ -204,7 +250,9 @@ const toggleExpand = (node: ITreeNode) => {
       :node="node"
       :expanded="isExpanded(node)"
       :loading-keys="loadingKeysRef"
-      @toggle-expand="toggleExpand"
+      :selected-keys="selectedKeysRef"
+      @toggle="toggleExpand"
+      @select="handleSelect"
     ></m-tree-node>
   </div>
 </template>
