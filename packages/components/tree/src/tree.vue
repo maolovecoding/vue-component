@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import {
-  computed,
-  provide,
-  ref,
-  useSlots,
-  watch,
-} from "vue";
+import { computed, provide, ref, useSlots, watch } from "vue";
 import { createNameSpace } from "@mao/utils";
 import MTreeNode from "./treeNode.vue";
 import { treeInjectKey } from "./types";
+import MVirtualList from '@mao/components/virtual-list'
 type Key = string | number;
 interface ITreeOptions {
   label?: Key;
@@ -52,7 +47,6 @@ interface ITreeEmit {
 provide(treeInjectKey, {
   slots: useSlots()
 });
-
 defineOptions({
   name: "m-tree"
 });
@@ -263,16 +257,19 @@ const handleSelect = (node: ITreeNode) => {
 </script>
 <template>
   <div :class="bem.b()">
-    <m-tree-node
-      v-for="node in flattenTree"
-      :key="node.key"
-      :node="node"
-      :expanded="isExpanded(node)"
-      :loading-keys="loadingKeysRef"
-      :selected-keys="selectedKeysRef"
-      @toggle="toggleExpand"
-      @select="handleSelect"
-    ></m-tree-node>
+    <m-virtual-list :items="flattenTree" :remain="8" :size="31">
+      <template #default="{ node }">
+        <m-tree-node
+          :key="node.key"
+          :node="node"
+          :expanded="isExpanded(node)"
+          :loading-keys="loadingKeysRef"
+          :selected-keys="selectedKeysRef"
+          @toggle="toggleExpand"
+          @select="handleSelect"
+        ></m-tree-node>
+      </template>
+    </m-virtual-list>
   </div>
 </template>
 
