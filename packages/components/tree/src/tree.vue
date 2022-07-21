@@ -9,6 +9,8 @@ interface ITreeOptions {
   children?: ITreeOptions[];
   // 是否是叶子节点
   isLeaf?: boolean;
+  // 是否禁用当前节点
+  disabled?: boolean;
   [key: string]: unknown;
 }
 interface ITreeProps {
@@ -100,6 +102,7 @@ const traversal = (data: ITreeOptions[], parent?: ITreeNode) => {
       rawNode: node,
       // 数据的层级 或者说深度
       level: parent !== undefined ? parent.level + 1 : 0,
+      disabled: !!node.disabled,
       isLeaf: node.isLeaf ?? children.length === 0
     };
     if (children.length) {
@@ -211,7 +214,9 @@ watch(
   () => selectedKeys,
   value => {
     if (value) {
-      selectedKeysRef.value = value;
+      // 单选只能给一个值
+      if (!multiple) selectedKeysRef.value = value.slice(0, 1);
+      else selectedKeysRef.value = value;
     }
   },
   { immediate: true }
@@ -226,7 +231,7 @@ const handleSelect = (node: ITreeNode) => {
     const exist = keys.findIndex(key => key === node.key);
     if (exist !== -1) {
       // 删除
-      keys.splice(exist,1);
+      keys.splice(exist, 1);
     } else {
       // 添加
       keys.push(node.key);

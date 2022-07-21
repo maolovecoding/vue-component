@@ -34,11 +34,19 @@ const isLoading = computed(() => loadingKeys.has(node.key));
 const isSelected = computed(() => selectedKeys?.includes(node.key));
 
 const handleSelect = () => {
+  // 是否禁用了
+  if (node.disabled) return;
   emits("select", node);
 };
 </script>
 <template>
-  <div :class="[bem.b(), bem.is('selected', !!isSelected)]">
+  <div
+    :class="[
+      bem.b(),
+      bem.is('selected', !!isSelected),
+      bem.is('disabled', node.disabled)
+    ]"
+  >
     <div
       :class="[bem.e('content')]"
       :style="{ paddingLeft: node.level * 16 + 'px' }"

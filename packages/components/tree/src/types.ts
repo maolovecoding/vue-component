@@ -5,6 +5,8 @@ export interface ITreeOptions {
   children?: ITreeOptions[];
   // 是否是叶子节点
   isLeaf?: boolean;
+  // 是否禁用当前节点
+  disabled?: boolean;
   [key: string]: unknown;
 }
 export interface ITreeProps {
@@ -16,6 +18,7 @@ export interface ITreeProps {
   defaultExpandedKeys?: Key[];
   // 异步加载数据成功后触发的回调
   onLoad?: (node: ITreeOptions) => Promise<ITreeOptions[]>;
+  // 双向绑定时 选中的数据项keys
   selectedKeys?: Key[];
   // 是否允许选中数据
   selectable?: boolean;

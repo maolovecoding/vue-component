@@ -50,6 +50,33 @@ function createLabel(level: number): string {
   return "";
 }
 const data = ref(createData());
+const data2 = ref([
+  {
+    key: "0",
+    label: "0",
+    children: [
+      {
+        key: "0-0",
+        label: "0-0"
+      },
+      {
+        disabled: true, // 该节点禁用
+        key: "0-1",
+        label: "0-1",
+        children: [
+          {
+            label: "0-1-0",
+            key: "0-1-0"
+          },
+          {
+            label: "0-1-1",
+            key: "0-1-1"
+          }
+        ]
+      }
+    ]
+  }
+]);
 const handleLoad = (node: ITreeOptions) => {
   return new Promise<ITreeOptions[]>(resolve => {
     setTimeout(resolve, 1000, [
@@ -73,7 +100,7 @@ const selectedKeys = ref<Key[]>(["40", "41"]);
   <m-tree
     v-model:selected-keys="selectedKeys"
     :selectable="true"
-    :multiple="true"
+    :multiple="false"
     :data="data"
     label-field="label"
     key-field="key"
