@@ -1,3 +1,4 @@
+import { SetupContext, InjectionKey } from "vue";
 export type Key = string | number;
 export interface ITreeOptions {
   label?: Key;
@@ -38,5 +39,17 @@ export interface ITreeNodeProps {
   node: ITreeNode;
   expanded?: boolean;
   loadingKeys?: Set<Key>;
-  selectedKeys?:Key[]
+  selectedKeys?: Key[];
+}
+// 上下文参数
+export interface ITreeContext {
+  slots: SetupContext<ITreeNode>["slots"];
+  // emit: SetupContext<ITreeEmit>["emit"];
+}
+
+// 注入的变量
+export const treeInjectKey: InjectionKey<ITreeContext> = Symbol();
+
+export interface ITreeNodeContentProps {
+  node: ITreeNode;
 }

@@ -4,6 +4,7 @@ import MSwitcher from "./icon/switcher";
 import { ITreeNode, Key } from "./types";
 import Loading from "./icon/loading";
 import { computed } from "vue";
+import MTreeNodeContent from "./treeNodeContent";
 interface ITreeNodeProps {
   node: ITreeNode;
   expanded?: boolean;
@@ -64,9 +65,9 @@ const handleSelect = () => {
           <m-switcher v-else />
         </m-icon>
       </span>
-      <span :class="bem.e('label')" @click="handleSelect">{{
-        node.label
-      }}</span>
+      <span :class="bem.e('label')" @click="handleSelect">
+        <MTreeNodeContent :node="node"> </MTreeNodeContent>
+      </span>
     </div>
   </div>
 </template>

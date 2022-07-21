@@ -107,5 +107,11 @@ const selectedKeys = ref<Key[]>(["40", "41"]);
     children-field="children"
     :default-expanded-keys="['40', '41']"
     :on-load="handleLoad"
-  ></m-tree>
+  >
+    <!-- 虚拟滚动列表 -->
+    <template #default="{ node }">
+      <span>{{ node.key }}</span>
+      <span>{{ node.label }}</span>
+    </template>
+  </m-tree>
 </template>

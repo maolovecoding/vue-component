@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import {
+  computed,
+  provide,
+  ref,
+  useSlots,
+  watch,
+} from "vue";
 import { createNameSpace } from "@mao/utils";
 import MTreeNode from "./treeNode.vue";
+import { treeInjectKey } from "./types";
 type Key = string | number;
 interface ITreeOptions {
   label?: Key;
@@ -37,6 +44,15 @@ interface ITreeNode extends Required<ITreeOptions> {
   // 是否是叶子节点
   isLeaf: boolean;
 }
+interface ITreeEmit {
+  (e: "update:selectedKeys", keys: Key[]): Key[];
+}
+
+// 提供的数据 将当前组件的插件放到provide里面
+provide(treeInjectKey, {
+  slots: useSlots()
+});
+
 defineOptions({
   name: "m-tree"
 });
@@ -55,9 +71,7 @@ const {
 } = defineProps<ITreeProps>();
 
 // 定义事件
-const emits = defineEmits<{
-  (e: "update:selectedKeys", keys: Key[]): Key[];
-}>();
+const emits = defineEmits<ITreeEmit>();
 // tree 就是对数据格式化后的结果
 const tree = ref<ITreeNode[]>([]);
 
